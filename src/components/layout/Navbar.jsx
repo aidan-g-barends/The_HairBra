@@ -15,7 +15,10 @@ function Navbar() {
             <button onClick={signOut} className="text-amber-400">Log Out</button>
           </>
         ) : (
-          <Link to="/login" className="text-amber-400">Login / Sign Up</Link>
+          <>
+            <Link to="/login" className="text-amber-400">Login</Link>
+            <Link to="/register" className="text-amber-400">Sign Up</Link>
+          </>
         )}
       </div>
     </nav>
