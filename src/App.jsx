@@ -1,24 +1,17 @@
-import { useAuth } from './context/AuthContext'
+import { Routes, Route } from 'react-router-dom'
+import Navbar from './components/layout/Navbar'
 import Login from './pages/Login'
 import Register from './pages/Register'
 
 function App() {
-  const { user, loading } = useAuth()
-
-  if (loading) return <p className="text-white bg-black p-8">Checking auth...</p>
-
-  if (user) {
-    return (
-      <div className="text-white bg-black p-8">
-        <p>Logged in as: {user.email}</p>
-      </div>
-    )
-  }
-
   return (
     <div className="bg-black min-h-screen">
-      <Login />
-      <Register />
+      <Navbar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<h1 className="text-white p-8">Homepage coming soon</h1>} />
+      </Routes>
     </div>
   )
 }
