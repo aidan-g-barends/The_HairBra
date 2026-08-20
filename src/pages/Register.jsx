@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { signUp } from '../services/authService'
 
 function Register() {
@@ -7,6 +7,7 @@ function Register() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const navigate = useNavigate()
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -16,7 +17,10 @@ function Register() {
 
     if (error) {
       setError(error.message)
+      return
     }
+
+    navigate('/')
   }
 
   return (
