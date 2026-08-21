@@ -4,6 +4,7 @@ import Footer from './components/layout/Footer'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Hero from './components/layout/home/Hero'
+import About from './components/layout/home/About'
 
 function App() {
   return (
@@ -12,7 +13,15 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<Hero />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <About />
+            </>
+          }
+        />
       </Routes>
       <Footer />
     </div>
