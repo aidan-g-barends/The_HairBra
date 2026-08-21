@@ -12,6 +12,7 @@ function Products() {
     <section className="px-6 py-20 max-w-5xl mx-auto">
       <div className="flex justify-between items-end mb-12 border-b border-surface-bright pb-4">
         <div>
+            <p className="font-body text-primary text-xs uppercase tracking-widest mb-2">Shop</p>
           <h2 className="font-display text-4xl text-primary mb-2">Grooming Essentials</h2>
           <p className="font-body text-on-surface-variant">Curated products for the perfect finish.</p>
         </div>
@@ -30,7 +31,7 @@ function Products() {
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
               />
             </div>
             <h4 className="font-body text-on-surface text-sm mb-1">{product.name}</h4>

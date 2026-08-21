@@ -10,6 +10,7 @@ const barbers = [
 function Barbers() {
   return (
     <section className="px-6 py-20 max-w-5xl mx-auto text-center bg-surface-container-lowest">
+        <p className="font-body text-primary text-xs uppercase tracking-widest mb-3">The Team</p>
       <h2 className="font-display text-4xl text-primary mb-2">Meet Our Barbers</h2>
       <p className="font-body text-on-surface-variant mb-12">
         Skilled professionals dedicated to their craft.
@@ -25,7 +26,7 @@ function Barbers() {
               <img
                 src={barber.image}
                 alt={barber.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
               />
             </div>
 

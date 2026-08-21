@@ -22,6 +22,7 @@ const reviews = [
 function Reviews() {
   return (
     <section className="px-6 py-20 max-w-5xl mx-auto text-center bg-surface-container-lowest">
+        <p className="font-body text-primary text-xs uppercase tracking-widest mb-3">Testimonials</p>
       <h2 className="font-display text-4xl text-primary mb-12">What Our Clients Say</h2>
 
       <div className="grid md:grid-cols-3 gap-6">

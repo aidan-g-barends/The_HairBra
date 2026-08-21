@@ -25,6 +25,7 @@ const services = [
 function Services() {
   return (
     <section className="px-6 py-20 max-w-5xl mx-auto text-center">
+        <p className="font-body text-primary text-xs uppercase tracking-widest mb-3">Our Craft</p>
       <h2 className="font-display text-4xl text-primary mb-2">Signature Services</h2>
       <p className="font-body text-on-surface-variant mb-12">
         Meticulous craftsmanship for the modern gentleman.
