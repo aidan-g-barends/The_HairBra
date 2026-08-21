@@ -36,6 +36,9 @@ function Reviews() {
           </div>
         ))}
       </div>
+            <button className="mt-12 border border-primary text-primary font-body uppercase text-sm px-8 py-3 rounded-lg hover:bg-surface-container-highest transition-colors">
+        See More Reviews
+      </button>
     </section>
   )
 }

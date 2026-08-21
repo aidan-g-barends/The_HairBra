@@ -34,7 +34,7 @@ function Services() {
         {services.map((service) => (
           <div
             key={service.id}
-            className="bg-surface-dim border border-surface-bright rounded-xl p-8"
+            className="bg-surface-dim border border-surface-bright rounded-xl p-8 hover:bg-surface-container transition-colors duration-300"
           >
             <div className="flex justify-between items-start mb-4">
               <h3 className="font-display text-xl text-on-surface">{service.name}</h3>
