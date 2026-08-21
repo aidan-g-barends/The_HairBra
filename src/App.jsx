@@ -12,7 +12,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/" element={<h1 className="text-white p-8">Homepage coming soon</h1>} />
+        <Route path="/" element={<h1 className="font-display text-6xl text-primary p-8">The Hairbra</h1>} />
       </Routes>
       <Footer />
     </div>
