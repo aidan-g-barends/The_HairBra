@@ -7,6 +7,7 @@ import Hero from './components/layout/home/Hero'
 import About from './components/layout/home/About'
 import Services from './components/layout/home/Services'
 import Barbers from './components/layout/home/Barbers'
+import Products from './components/layout/home/Products'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <About />
               <Services />
               <Barbers />
+              <Products />
             </>
           }
         />
