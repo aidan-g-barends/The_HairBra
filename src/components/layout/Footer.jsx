@@ -1,9 +1,55 @@
+import { Link } from 'react-router-dom'
+
 function Footer() {
   return (
-    <footer className="bg-black text-white p-8 mt-12 border-t border-gray-800">
-      <p className="text-center text-sm text-gray-400">
-        © 2026 The Hairbra. All rights reserved.
-      </p>
+    <footer className="bg-surface-container-lowest text-on-surface px-6 pt-20 pb-8">
+      <div className="max-w-5xl mx-auto grid md:grid-cols-4 gap-8 mb-12">
+        <div className="md:col-span-2">
+          <h2 className="font-display text-2xl text-primary uppercase mb-4">The Hairbra</h2>
+          <p className="font-body text-on-surface-variant max-w-md mb-4">
+            Elevating the standard of men's grooming through classic technique, modern
+            precision, and an atmosphere of exclusive luxury.
+          </p>
+          <p className="font-body text-on-surface-variant text-sm">
+            101 Long Street, Cape Town, 8001
+          </p>
+          <p className="font-body text-on-surface-variant text-sm">
+            +27 21 123 4567
+          </p>
+          <p className="font-body text-on-surface-variant text-sm">
+            info@thehairbra.co.za
+          </p>
+        </div>
+
+        <div>
+          <h4 className="font-body text-sm uppercase tracking-widest text-on-surface mb-4">
+            Explore
+          </h4>
+          <ul className="space-y-2 font-body text-on-surface-variant text-sm">
+            <li><Link to="/" className="hover:text-primary">Home</Link></li>
+            <li><Link to="/barbers" className="hover:text-primary">Barbers</Link></li>
+            <li><Link to="/shop" className="hover:text-primary">Shop</Link></li>
+            <li><Link to="/booking" className="hover:text-primary">Book Appointment</Link></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="font-body text-sm uppercase tracking-widest text-on-surface mb-4">
+            Legal
+          </h4>
+          <ul className="space-y-2 font-body text-on-surface-variant text-sm">
+            <li><a href="#" className="hover:text-primary">Privacy Policy</a></li>
+            <li><a href="#" className="hover:text-primary">Terms of Service</a></li>
+            <li><a href="#" className="hover:text-primary">FAQ</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-surface-bright pt-6 text-center">
+        <p className="font-body text-on-surface-variant text-xs uppercase tracking-widest">
+          © 2026 The Hairbra. All rights reserved.
+        </p>
+      </div>
     </footer>
   )
 }
