@@ -3,7 +3,7 @@ import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Hero from './components/home/Hero'
+import Hero from './components/layout/home/Hero'
 
 function App() {
   return (
