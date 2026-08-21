@@ -8,6 +8,7 @@ import About from './components/layout/home/About'
 import Services from './components/layout/home/Services'
 import Barbers from './components/layout/home/Barbers'
 import Products from './components/layout/home/Products'
+import Reviews from './components/layout/home/Reviews'
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Services />
               <Barbers />
               <Products />
+              <Reviews />
             </>
           }
         />
