@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Hero from './components/layout/home/Hero'
 import About from './components/layout/home/About'
+import Services from './components/layout/home/Services'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <>
               <Hero />
               <About />
+              <Services />
             </>
           }
         />
