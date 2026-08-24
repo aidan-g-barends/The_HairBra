@@ -4,7 +4,7 @@ import Footer from './components/layout/Footer'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Hero from './components/layout/home/Hero'
-import About from './components/layout/home/About'
+import AboutSection from './components/layout/home/About'
 import Services from './components/layout/home/Services'
 import BarbersPreview from './components/layout/home/Barbers'
 import Products from './components/layout/home/Products'
@@ -25,7 +25,7 @@ function App() {
           element={
             <>
               <Hero />
-              <About />
+              <AboutSection />
               <Services />
               <BarbersPreview />
               <Products />
