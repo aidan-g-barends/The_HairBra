@@ -44,11 +44,11 @@ function About() {
       <section className="bg-surface-container-lowest border-y border-surface-bright px-6 py-24">
         <div className="max-w-4xl mx-auto grid md:grid-cols-3 gap-10 items-center">
           <div className="aspect-square rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
-            <span className="font-display text-primary text-4xl">MR</span>
+            <span className="font-display text-primary text-4xl">AB</span>
           </div>
           <div className="md:col-span-2">
             <p className="font-body text-primary text-xs uppercase tracking-widest mb-2">Founder & Owner</p>
-            <h2 className="font-display text-3xl text-on-surface mb-4">Marcus Reign</h2>
+            <h2 className="font-display text-3xl text-on-surface mb-4">Abraham Bale</h2>
             <p className="font-body text-on-surface-variant leading-relaxed mb-4">
               "I didn't want to open just another barbershop. I wanted to build the place
               I always wished existed — where the craft is taken seriously, and every
