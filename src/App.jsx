@@ -10,6 +10,7 @@ import BarbersPreview from './components/layout/home/Barbers'
 import Products from './components/layout/home/Products'
 import Reviews from './components/layout/home/Reviews'
 import Barbers from './pages/Barbers'
+import BarberProfile from './pages/BarberProfile'
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           }
         />
         <Route path="/barbers" element={<Barbers />} />
+        <Route path="/barbers/:id" element={<BarberProfile />} />
       </Routes>
       <Footer />
     </div>
