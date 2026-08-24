@@ -6,9 +6,10 @@ import Register from './pages/Register'
 import Hero from './components/layout/home/Hero'
 import About from './components/layout/home/About'
 import Services from './components/layout/home/Services'
-import Barbers from './components/layout/home/Barbers'
+import BarbersPreview from './components/layout/home/Barbers'
 import Products from './components/layout/home/Products'
 import Reviews from './components/layout/home/Reviews'
+import Barbers from './pages/Barbers'
 
 function App() {
   return (
@@ -24,12 +25,13 @@ function App() {
               <Hero />
               <About />
               <Services />
-              <Barbers />
+              <BarbersPreview />
               <Products />
               <Reviews />
             </>
           }
         />
+        <Route path="/barbers" element={<Barbers />} />
       </Routes>
       <Footer />
     </div>
