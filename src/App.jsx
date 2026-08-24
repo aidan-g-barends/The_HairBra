@@ -9,6 +9,7 @@ import Services from './components/layout/home/Services'
 import BarbersPreview from './components/layout/home/Barbers'
 import Products from './components/layout/home/Products'
 import Reviews from './components/layout/home/Reviews'
+import About from './pages/About'
 import Barbers from './pages/Barbers'
 import BarberProfile from './pages/BarberProfile'
 
@@ -32,6 +33,7 @@ function App() {
             </>
           }
         />
+        <Route path="/about" element={<About />} />
         <Route path="/barbers" element={<Barbers />} />
         <Route path="/barbers/:id" element={<BarberProfile />} />
       </Routes>

@@ -27,6 +27,7 @@ function Footer() {
           </h4>
           <ul className="space-y-3 font-body text-on-surface-variant text-sm">
             <li><Link to="/" className="hover:text-primary">Home</Link></li>
+            <li><Link to="/about" className="hover:text-primary">About</Link></li>
             <li><Link to="/barbers" className="hover:text-primary">Barbers</Link></li>
             <li><Link to="/shop" className="hover:text-primary">Shop</Link></li>
             <li><Link to="/booking" className="hover:text-primary">Book Appointment</Link></li>
