@@ -45,11 +45,25 @@ export async function getAvailableSlots(barberId, date) {
   return { slots: availableSlots, error: null }
 }
 
-export async function createAppointment({ customerId, barberId, serviceId, date, time, endTime, depositAmount }) {
+export async function createAppointment({
+  customerId,
+  guestName,
+  guestEmail,
+  guestPhone,
+  barberId,
+  serviceId,
+  date,
+  time,
+  endTime,
+  depositAmount,
+}) {
   const { data, error } = await supabase
     .from('appointments')
     .insert({
-      customer_id: customerId,
+      customer_id: customerId || null,
+      guest_name: guestName || null,
+      guest_email: guestEmail || null,
+      guest_phone: guestPhone || null,
       barber_id: barberId,
       service_id: serviceId,
       appointment_date: date,
@@ -87,6 +101,18 @@ export async function notifyBarber(barberName, appointmentDetails) {
     type: 'new_appointment',
     title: 'New Appointment',
     message: `New booking: ${appointmentDetails}`,
+  })
+
+  return { error }
+}
+
+export async function notifyCustomer(customerLabel, appointmentDetails) {
+  const { error } = await supabase.from('notifications').insert({
+    recipient_type: 'customer',
+    recipient_label: customerLabel,
+    type: 'booking_confirmed',
+    title: 'Booking Confirmed',
+    message: `Your booking is confirmed: ${appointmentDetails}`,
   })
 
   return { error }
