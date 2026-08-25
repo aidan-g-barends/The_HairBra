@@ -44,3 +44,50 @@ export async function getAvailableSlots(barberId, date) {
 
   return { slots: availableSlots, error: null }
 }
+
+export async function createAppointment({ customerId, barberId, serviceId, date, time, endTime, depositAmount }) {
+  const { data, error } = await supabase
+    .from('appointments')
+    .insert({
+      customer_id: customerId,
+      barber_id: barberId,
+      service_id: serviceId,
+      appointment_date: date,
+      start_time: time,
+      end_time: endTime,
+      status: 'PENDING_PAYMENT',
+      deposit_amount: depositAmount,
+      deposit_paid: false,
+    })
+    .select()
+    .single()
+
+  return { data, error }
+}
+
+export async function confirmAppointmentPayment(appointmentId, paymentReference) {
+  const { data, error } = await supabase
+    .from('appointments')
+    .update({
+      status: 'CONFIRMED',
+      deposit_paid: true,
+      payment_id: paymentReference,
+    })
+    .eq('id', appointmentId)
+    .select()
+    .single()
+
+  return { data, error }
+}
+
+export async function notifyBarber(barberName, appointmentDetails) {
+  const { error } = await supabase.from('notifications').insert({
+    recipient_type: 'barber',
+    recipient_label: barberName,
+    type: 'new_appointment',
+    title: 'New Appointment',
+    message: `New booking: ${appointmentDetails}`,
+  })
+
+  return { error }
+}
