@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getAllServices } from '../services/serviceService'
 import { getAllBarbers } from '../services/barberService'
+import { getAvailableSlots } from '../services/bookingService'
 
 function Booking() {
   const [step, setStep] = useState(1)
@@ -11,6 +12,11 @@ function Booking() {
   const [barbers, setBarbers] = useState([])
   const [barbersLoading, setBarbersLoading] = useState(true)
   const [selectedBarber, setSelectedBarber] = useState(null)
+
+  const [selectedDate, setSelectedDate] = useState('')
+  const [selectedTime, setSelectedTime] = useState(null)
+  const [slots, setSlots] = useState([])
+  const [slotsLoading, setSlotsLoading] = useState(false)
 
   useEffect(() => {
     async function fetchServices() {
@@ -29,6 +35,19 @@ function Booking() {
     }
     fetchBarbers()
   }, [])
+
+  useEffect(() => {
+    if (!selectedDate) return
+
+    async function fetchSlots() {
+      setSlotsLoading(true)
+      setSelectedTime(null)
+      const { slots } = await getAvailableSlots(selectedBarber?.id, selectedDate)
+      setSlots(slots)
+      setSlotsLoading(false)
+    }
+    fetchSlots()
+  }, [selectedDate, selectedBarber])
 
   function handleSelectService(service) {
     setSelectedService(service)
@@ -129,15 +148,60 @@ function Booking() {
 
 {step === 3 && (
   <div>
-    <p className="text-on-surface">
-      Service: <strong className="text-primary">{selectedService?.name}</strong>
+    <h2 className="font-display text-2xl text-on-surface mb-2">Select Date & Time</h2>
+    <p className="font-body text-on-surface-variant text-sm mb-6">
+      {selectedService?.name} with {selectedBarber?.name || 'Any Available Barber'}
     </p>
-    <p className="text-on-surface">
-      Barber: <strong className="text-primary">{selectedBarber?.name || 'Any Available'}</strong>
-    </p>
-    <button onClick={() => setStep(2)} className="mt-4 text-on-surface-variant text-sm underline">
-      ← Back to barbers
-    </button>
+
+    <label className="block font-body text-on-surface text-sm mb-2">Date</label>
+    <input
+      type="date"
+      value={selectedDate}
+      min={new Date().toISOString().split('T')[0]}
+      onChange={(e) => setSelectedDate(e.target.value)}
+      className="w-full p-3 bg-white text-black rounded-lg mb-8"
+    />
+
+    {selectedDate && (
+      <>
+        <label className="block font-body text-on-surface text-sm mb-3">Time</label>
+        {slotsLoading ? (
+          <p className="text-on-surface-variant">Checking availability...</p>
+        ) : slots.length === 0 ? (
+          <p className="text-on-surface-variant">No available slots for this date.</p>
+        ) : (
+          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-8">
+            {slots.map((time) => (
+              <button
+                key={time}
+                onClick={() => setSelectedTime(time)}
+                className={`font-body text-sm py-3 rounded-lg border transition-colors ${
+                  selectedTime === time
+                    ? 'bg-primary text-on-primary border-primary'
+                    : 'border-surface-bright text-on-surface hover:border-primary'
+                }`}
+              >
+                {time}
+              </button>
+            ))}
+          </div>
+        )}
+      </>
+    )}
+
+    <div className="flex gap-4">
+      <button onClick={() => setStep(2)} className="text-on-surface-variant text-sm underline">
+        ← Back to barbers
+      </button>
+      {selectedDate && selectedTime && (
+        <button
+          onClick={() => setStep(4)}
+          className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto"
+        >
+          Continue to Summary
+        </button>
+      )}
+    </div>
   </div>
 )}
     </div>
