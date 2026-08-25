@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
 import { getAllServices } from '../services/serviceService'
+import { getAllBarbers } from '../services/barberService'
 
 function Booking() {
   const [step, setStep] = useState(1)
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedService, setSelectedService] = useState(null)
+
+  const [barbers, setBarbers] = useState([])
+  const [barbersLoading, setBarbersLoading] = useState(true)
+  const [selectedBarber, setSelectedBarber] = useState(null)
 
   useEffect(() => {
     async function fetchServices() {
@@ -16,11 +21,24 @@ function Booking() {
     fetchServices()
   }, [])
 
+  useEffect(() => {
+    async function fetchBarbers() {
+      const { data, error } = await getAllBarbers()
+      if (!error) setBarbers(data)
+      setBarbersLoading(false)
+    }
+    fetchBarbers()
+  }, [])
+
   function handleSelectService(service) {
     setSelectedService(service)
     setStep(2)
   }
 
+  function handleSelectBarber(barber) {
+    setSelectedBarber(barber)
+    setStep(3)
+  }
   return (
     <div className="px-6 py-20 max-w-3xl mx-auto">
       <h1 className="font-display text-4xl text-primary text-center mb-2">Book an Appointment</h1>
@@ -60,18 +78,68 @@ function Booking() {
       )}
 
       {step === 2 && (
-        <div>
-          <p className="text-on-surface">
-            You selected: <strong className="text-primary">{selectedService?.name}</strong>
+  <div>
+    <h2 className="font-display text-2xl text-on-surface mb-2">Select a Barber</h2>
+    <p className="font-body text-on-surface-variant text-sm mb-6">
+      {selectedService?.name} — R{selectedService?.price}
+    </p>
+
+    {barbersLoading ? (
+      <p className="text-on-surface-variant">Loading barbers...</p>
+    ) : (
+      <div className="space-y-4">
+        <button
+          onClick={() => handleSelectBarber(null)}
+          className="w-full text-left bg-surface-dim border border-surface-bright rounded-xl p-6 hover:border-primary transition-colors"
+        >
+          <h3 className="font-display text-lg text-on-surface">Any Available Barber</h3>
+          <p className="font-body text-on-surface-variant text-sm">
+            We'll match you with the earliest available chair.
           </p>
+        </button>
+
+        {barbers.map((barber) => (
           <button
-            onClick={() => setStep(1)}
-            className="mt-4 text-on-surface-variant text-sm underline"
+            key={barber.id}
+            onClick={() => handleSelectBarber(barber)}
+            className="w-full text-left bg-surface-dim border border-surface-bright rounded-xl p-6 hover:border-primary transition-colors flex items-center gap-4"
           >
-            ← Back to services
+            <div className="w-14 h-14 rounded-full overflow-hidden flex-shrink-0">
+              <img src={barber.profile_image} alt={barber.name} className="w-full h-full object-cover" />
+            </div>
+            <div>
+              <h3 className="font-display text-lg text-on-surface">{barber.name}</h3>
+              <p className="font-body text-on-surface-variant text-sm">
+                {barber.specialties?.join(', ')}
+              </p>
+            </div>
           </button>
-        </div>
-      )}
+        ))}
+      </div>
+    )}
+
+    <button
+      onClick={() => setStep(1)}
+      className="mt-6 text-on-surface-variant text-sm underline"
+    >
+      ← Back to services
+    </button>
+  </div>
+)}
+
+{step === 3 && (
+  <div>
+    <p className="text-on-surface">
+      Service: <strong className="text-primary">{selectedService?.name}</strong>
+    </p>
+    <p className="text-on-surface">
+      Barber: <strong className="text-primary">{selectedBarber?.name || 'Any Available'}</strong>
+    </p>
+    <button onClick={() => setStep(2)} className="mt-4 text-on-surface-variant text-sm underline">
+      ← Back to barbers
+    </button>
+  </div>
+)}
     </div>
   )
 }
