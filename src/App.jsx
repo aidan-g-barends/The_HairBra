@@ -12,6 +12,7 @@ import Reviews from './components/layout/home/Reviews'
 import About from './pages/About'
 import Barbers from './pages/Barbers'
 import BarberProfile from './pages/BarberProfile'
+import Booking from './pages/Booking'
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/barbers" element={<Barbers />} />
         <Route path="/barbers/:id" element={<BarberProfile />} />
+        <Route path="/booking" element={<Booking />} />
       </Routes>
       <Footer />
     </div>
