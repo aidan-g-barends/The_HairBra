@@ -62,7 +62,7 @@ function Booking() {
     <div className="px-6 py-20 max-w-3xl mx-auto">
       <h1 className="font-display text-4xl text-primary text-center mb-2">Book an Appointment</h1>
       <p className="font-body text-on-surface-variant text-center mb-12">
-        Step {step} of 3
+        Step {step} of 4
       </p>
 
       {step === 1 && (
@@ -201,6 +201,66 @@ function Booking() {
           Continue to Summary
         </button>
       )}
+    </div>
+  </div>
+)}
+
+{step === 4 && (
+  <div>
+    <h2 className="font-display text-2xl text-on-surface mb-6">Booking Summary</h2>
+
+    <div className="bg-surface-dim border border-surface-bright rounded-xl p-6 mb-8 space-y-4">
+      <div className="flex justify-between border-b border-surface-bright pb-4">
+        <span className="font-body text-on-surface-variant">Service</span>
+        <span className="font-body text-on-surface">{selectedService?.name}</span>
+      </div>
+      <div className="flex justify-between border-b border-surface-bright pb-4">
+        <span className="font-body text-on-surface-variant">Barber</span>
+        <span className="font-body text-on-surface">
+          {selectedBarber?.name || 'Any Available'}
+        </span>
+      </div>
+      <div className="flex justify-between border-b border-surface-bright pb-4">
+        <span className="font-body text-on-surface-variant">Date</span>
+        <span className="font-body text-on-surface">
+          {new Date(selectedDate + 'T00:00:00').toLocaleDateString('en-ZA', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+          })}
+        </span>
+      </div>
+      <div className="flex justify-between border-b border-surface-bright pb-4">
+        <span className="font-body text-on-surface-variant">Time</span>
+        <span className="font-body text-on-surface">{selectedTime}</span>
+      </div>
+      <div className="flex justify-between border-b border-surface-bright pb-4">
+        <span className="font-body text-on-surface-variant">Service Price</span>
+        <span className="font-body text-on-surface">R{selectedService?.price}</span>
+      </div>
+      <div className="flex justify-between border-b border-surface-bright pb-4">
+        <span className="font-body text-on-surface-variant">Required Deposit</span>
+        <span className="font-display text-lg text-primary">
+          R{selectedService?.deposit_amount}
+        </span>
+      </div>
+      <div className="flex justify-between">
+        <span className="font-body text-on-surface-variant">Remaining Balance</span>
+        <span className="font-body text-on-surface">
+          R{selectedService?.price - selectedService?.deposit_amount}
+        </span>
+      </div>
+    </div>
+
+    <div className="flex gap-4">
+      <button onClick={() => setStep(3)} className="text-on-surface-variant text-sm underline">
+        ← Back to date & time
+      </button>
+      <button
+        className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto"
+      >
+        Continue to Payment
+      </button>
     </div>
   </div>
 )}
