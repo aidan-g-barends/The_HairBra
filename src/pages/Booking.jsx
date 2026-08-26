@@ -110,7 +110,7 @@ function Booking() {
   setProcessing(false)
   setStep(3)
   return
-}
+}//1212
 
     const payment = await processPayment(selectedService.deposit_amount)
 
