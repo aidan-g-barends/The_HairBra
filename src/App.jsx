@@ -15,6 +15,7 @@ import BarberProfile from './pages/BarberProfile'
 import Booking from './pages/Booking'
 import Shop from './pages/Shop'
 import ProductDetail from './pages/ProductDetail'
+import Cart from './pages/Cart'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
         <Route path="/booking" element={<Booking />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/shop/product/:id" element={<ProductDetail />} />
+        <Route path="/cart" element={<Cart />} />
       </Routes>
       <Footer />
     </div>
