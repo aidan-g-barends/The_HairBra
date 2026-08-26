@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getProductById } from '../services/productService'
+import { useCart } from '../context/CartContext'
 
 function ProductDetail() {
   const { id } = useParams()
+  const { addToCart } = useCart()
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
   const [quantity, setQuantity] = useState(1)
+  const [added, setAdded] = useState(false)
 
   useEffect(() => {
     async function fetchProduct() {
@@ -16,6 +19,12 @@ function ProductDetail() {
     }
     fetchProduct()
   }, [id])
+
+  function handleAddToCart() {
+    addToCart(product, quantity)
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2000)
+  }
 
   if (loading) {
     return <p className="text-on-surface p-8 text-center">Loading...</p>
@@ -76,8 +85,11 @@ function ProductDetail() {
                 </div>
               </div>
 
-              <button className="w-full bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg hover:opacity-90 transition-opacity">
-                Add to Cart
+              <button
+                onClick={handleAddToCart}
+                className="w-full bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
+              >
+                {added ? 'Added!' : 'Add to Cart'}
               </button>
             </>
           )}
