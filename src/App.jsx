@@ -13,6 +13,7 @@ import About from './pages/About'
 import Barbers from './pages/Barbers'
 import BarberProfile from './pages/BarberProfile'
 import Booking from './pages/Booking'
+import Shop from './pages/Shop'
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
         <Route path="/barbers" element={<Barbers />} />
         <Route path="/barbers/:id" element={<BarberProfile />} />
         <Route path="/booking" element={<Booking />} />
+        <Route path="/shop" element={<Shop />} />
       </Routes>
       <Footer />
     </div>
