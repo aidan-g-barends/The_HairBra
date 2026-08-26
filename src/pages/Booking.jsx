@@ -105,11 +105,12 @@ function Booking() {
     })
 
     if (createError) {
-      setPaymentError('This time slot was just booked. Please choose another.')
-      setProcessing(false)
-      setStep(3)
-      return
-    }
+  console.log('CREATE ERROR:', createError)
+  setPaymentError('This time slot was just booked. Please choose another.')
+  setProcessing(false)
+  setStep(3)
+  return
+}
 
     const payment = await processPayment(selectedService.deposit_amount)
 
