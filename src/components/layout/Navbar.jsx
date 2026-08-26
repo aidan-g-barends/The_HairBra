@@ -6,18 +6,31 @@ function Navbar() {
   const { user } = useAuth()
 
   return (
-    <nav className="bg-black text-white p-4 flex justify-between items-center">
-      <Link to="/" className="font-bold">The Hairbra</Link>
-      <div className="space-x-4">
+    <nav className="bg-black text-white px-6 py-4 flex justify-between items-center border-b border-surface-bright">
+      <Link to="/" className="font-display text-xl text-primary">The Hairbra</Link>
+
+      <div className="hidden md:flex items-center gap-6 font-body text-sm">
+        <Link to="/barbers" className="text-on-surface-variant hover:text-primary transition-colors">Barbers</Link>
+        <Link to="/shop" className="text-on-surface-variant hover:text-primary transition-colors">Shop</Link>
+        <Link to="/about" className="text-on-surface-variant hover:text-primary transition-colors">About</Link>
+        <Link
+          to="/booking"
+          className="bg-primary text-on-primary uppercase text-xs font-semibold px-4 py-2 rounded-lg"
+        >
+          Book Appointment
+        </Link>
+      </div>
+
+      <div className="flex items-center gap-4 font-body text-sm">
         {user ? (
           <>
-            <span>{user.email}</span>
-            <button onClick={signOut} className="text-amber-400">Log Out</button>
+            <span className="hidden sm:inline text-on-surface-variant">{user.email}</span>
+            <button onClick={signOut} className="text-primary">Log Out</button>
           </>
         ) : (
           <>
-            <Link to="/login" className="text-amber-400">Login</Link>
-            <Link to="/register" className="text-amber-400">Sign Up</Link>
+            <Link to="/login" className="text-on-surface-variant hover:text-primary transition-colors">Login</Link>
+            <Link to="/register" className="text-primary">Sign Up</Link>
           </>
         )}
       </div>
