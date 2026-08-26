@@ -26,56 +26,65 @@ function BarberProfile() {
 
   return (
     <div>
-      <section className="px-6 py-20 max-w-5xl mx-auto grid md:grid-cols-2 gap-12 items-start">
-        <div className="aspect-[4/5] rounded-xl overflow-hidden">
-          <img
-            src={barber.profile_image}
-            alt={barber.name}
-            className="w-full h-full object-cover"
-          />
-        </div>
+      <section className="px-6 py-20 max-w-5xl mx-auto">
+        <Link
+          to="/barbers"
+          className="inline-block mb-8 font-body text-on-surface-variant text-sm uppercase tracking-wide hover:text-primary transition-colors"
+        >
+          ← Back to Barbers
+        </Link>
 
-        <div>
-          <p className="font-body text-primary text-xs uppercase tracking-widest mb-3">Master Barber</p>
-          <h1 className="font-display text-5xl text-on-surface mb-4">{barber.name}</h1>
-
-          <div className="flex flex-wrap gap-2 mb-6">
-            {barber.specialties?.map((spec) => (
-              <span
-                key={spec}
-                className="font-body text-xs uppercase tracking-wide text-primary border border-primary/30 bg-primary/10 px-3 py-1.5 rounded-full"
-              >
-                {spec}
-              </span>
-            ))}
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="aspect-[4/5] rounded-xl overflow-hidden">
+            <img
+              src={barber.profile_image}
+              alt={barber.name}
+              className="w-full h-full object-cover"
+            />
           </div>
 
-          <div className="flex gap-8 mb-8 pb-8 border-b border-surface-bright">
-            <div>
-              <p className="font-display text-2xl text-primary">{barber.years_experience}</p>
-              <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Years Experience</p>
+          <div>
+            <p className="font-body text-primary text-xs uppercase tracking-widest mb-3">Master Barber</p>
+            <h1 className="font-display text-5xl text-on-surface mb-4">{barber.name}</h1>
+
+            <div className="flex flex-wrap gap-2 mb-6">
+              {barber.specialties?.map((spec) => (
+                <span
+                  key={spec}
+                  className="font-body text-xs uppercase tracking-wide text-primary border border-primary/30 bg-primary/10 px-3 py-1.5 rounded-full"
+                >
+                  {spec}
+                </span>
+              ))}
             </div>
-            <div>
-              <p className="font-display text-2xl text-primary">4.9</p>
-              <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Average Rating</p>
+
+            <div className="flex gap-8 mb-8 pb-8 border-b border-surface-bright">
+              <div>
+                <p className="font-display text-2xl text-primary">{barber.years_experience}</p>
+                <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Years Experience</p>
+              </div>
+              <div>
+                <p className="font-display text-2xl text-primary">4.9</p>
+                <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Average Rating</p>
+              </div>
+              <div>
+                <p className="font-display text-2xl text-primary">100+</p>
+                <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Reviews</p>
+              </div>
             </div>
-            <div>
-              <p className="font-display text-2xl text-primary">100+</p>
-              <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Reviews</p>
-            </div>
+
+            <h2 className="font-display text-xl text-on-surface mb-3">About {barber.name.split(' ')[0]}</h2>
+            <p className="font-body text-on-surface-variant leading-relaxed mb-8">
+              {barber.bio}
+            </p>
+
+            <Link
+              to="/booking"
+              className="inline-block bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
+            >
+              Book with {barber.name.split(' ')[0]}
+            </Link>
           </div>
-
-          <h2 className="font-display text-xl text-on-surface mb-3">About {barber.name.split(' ')[0]}</h2>
-          <p className="font-body text-on-surface-variant leading-relaxed mb-8">
-            {barber.bio}
-          </p>
-
-          <Link
-            to="/booking"
-            className="inline-block bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
-          >
-            Book with {barber.name.split(' ')[0]}
-          </Link>
         </div>
       </section>
 

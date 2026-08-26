@@ -5,7 +5,6 @@ import { getAllProducts } from '../services/productService'
 function Shop() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
-  const [activeCategory, setActiveCategory] = useState('All')
 
   useEffect(() => {
     async function fetchProducts() {
@@ -15,12 +14,6 @@ function Shop() {
     }
     fetchProducts()
   }, [])
-
-  const categories = ['All', ...new Set(products.map((p) => p.category))]
-  const filteredProducts =
-    activeCategory === 'All'
-      ? products
-      : products.filter((p) => p.category === activeCategory)
 
   return (
     <div>
@@ -37,10 +30,6 @@ function Shop() {
             <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Products</p>
           </div>
           <div>
-            <p className="font-display text-3xl text-primary">{categories.length - 1}</p>
-            <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Categories</p>
-          </div>
-          <div>
             <p className="font-display text-3xl text-primary">Free</p>
             <p className="font-body text-on-surface-variant text-xs uppercase tracking-wide">Store Pickup</p>
           </div>
@@ -48,31 +37,11 @@ function Shop() {
       </div>
 
       <section className="px-6 py-20 max-w-5xl mx-auto">
-        {!loading && (
-          <div className="flex justify-center gap-3 flex-wrap mb-14">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`font-body text-xs uppercase tracking-wide px-4 py-2 rounded-full border transition-colors ${
-                  activeCategory === cat
-                    ? 'bg-primary text-on-primary border-primary'
-                    : 'border-surface-bright text-on-surface-variant hover:border-primary hover:text-primary'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        )}
-
         {loading ? (
           <p className="text-on-surface-variant text-center">Loading products...</p>
-        ) : filteredProducts.length === 0 ? (
-          <p className="text-on-surface-variant text-center">No products in this category.</p>
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => (
+            {products.map((product) => (
               <Link
                 to={`/shop/product/${product.id}`}
                 key={product.id}

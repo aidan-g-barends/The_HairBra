@@ -84,7 +84,7 @@ function ProductDetail() {
 
           <Link
             to="/shop"
-            className="block text-center mt-6 font-body text-on-surface-variant text-sm underline"
+            className="inline-block mt-6 font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
           >
             ← Back to Shop
           </Link>

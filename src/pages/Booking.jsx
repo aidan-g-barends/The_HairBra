@@ -105,11 +105,11 @@ function Booking() {
     })
 
     if (createError) {
-  setPaymentError('This time slot was just booked. Please choose another.')
-  setProcessing(false)
-  setStep(3)
-  return
-}//1212
+      setPaymentError('This time slot was just booked. Please choose another.')
+      setProcessing(false)
+      setStep(3)
+      return
+    }
 
     const payment = await processPayment(selectedService.deposit_amount)
 
@@ -219,7 +219,7 @@ function Booking() {
 
           <button
             onClick={() => setStep(1)}
-            className="mt-6 text-on-surface-variant text-sm underline"
+            className="mt-6 font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
           >
             ← Back to services
           </button>
@@ -270,7 +270,10 @@ function Booking() {
           )}
 
           <div className="flex gap-4">
-            <button onClick={() => setStep(2)} className="text-on-surface-variant text-sm underline">
+            <button
+              onClick={() => setStep(2)}
+              className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
+            >
               ← Back to barbers
             </button>
             {selectedDate && selectedTime && (
@@ -314,7 +317,10 @@ function Booking() {
           </div>
 
           <div className="flex gap-4">
-            <button onClick={() => setStep(3)} className="text-on-surface-variant text-sm underline">
+            <button
+              onClick={() => setStep(3)}
+              className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
+            >
               ← Back
             </button>
             {guestName && guestEmail && guestPhone && (
@@ -387,7 +393,7 @@ function Booking() {
           <div className="flex gap-4">
             <button
               onClick={() => setStep(user ? 3 : 4)}
-              className="text-on-surface-variant text-sm underline"
+              className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
             >
               ← Back
             </button>
@@ -437,7 +443,6 @@ function Booking() {
           </p>
 
           
-                      
             <a href="/"
             className="inline-block bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg"
           >
