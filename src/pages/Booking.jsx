@@ -105,7 +105,6 @@ function Booking() {
     })
 
     if (createError) {
-  console.log('CREATE ERROR:', createError)
   setPaymentError('This time slot was just booked. Please choose another.')
   setProcessing(false)
   setStep(3)
