@@ -117,3 +117,13 @@ export async function notifyCustomer(customerLabel, appointmentDetails) {
 
   return { error }
 }
+
+export async function getCustomerAppointments(customerId) {
+  const { data, error } = await supabase
+    .from('appointments')
+    .select('*, barbers(name), services(name)')
+    .eq('customer_id', customerId)
+    .order('appointment_date', { ascending: false })
+
+  return { data, error }
+}

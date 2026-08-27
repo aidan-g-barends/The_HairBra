@@ -100,3 +100,13 @@ export async function notifyOwnerOfOrder(orderNumber, total) {
 
   return { error }
 }
+
+export async function getCustomerOrders(customerId) {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*, order_items(*, products(name))')
+    .eq('customer_id', customerId)
+    .order('created_at', { ascending: false })
+
+  return { data, error }
+}

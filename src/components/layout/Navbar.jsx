@@ -16,6 +16,7 @@ function Navbar() {
         <Link to="/about" className="text-on-surface-variant hover:text-primary transition-colors">About</Link>
         <Link to="/barbers" className="text-on-surface-variant hover:text-primary transition-colors">Barbers</Link>
         <Link to="/shop" className="text-on-surface-variant hover:text-primary transition-colors">Shop</Link>
+        <Link to="/dashboard" className="text-on-surface-variant hover:text-primary transition-colors">Dashboard</Link>
         <Link
           to="/booking"
           className="bg-primary text-on-primary uppercase text-xs font-semibold px-4 py-2 rounded-lg"
