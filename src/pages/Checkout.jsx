@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../context/AuthContext'
 import { useCart } from '../context/CartContext'
 import { createOrder, confirmOrderPayment, reduceStock, notifyOwnerOfOrder } from '../services/orderService'
 import { processPayment } from '../services/paymentService'
@@ -12,9 +10,7 @@ const deliveryOptions = [
 ]
 
 function Checkout() {
-  const { user } = useAuth()
   const { items, subtotal, clearCart } = useCart()
-  const navigate = useNavigate()
 
   const [step, setStep] = useState(1)
 
@@ -46,10 +42,10 @@ function Checkout() {
     setError('')
 
     const { data: order, error: createError } = await createOrder({
-      customerId: user?.id || null,
-      guestName: user ? null : guestName,
-      guestEmail: user ? null : guestEmail,
-      guestPhone: user ? null : guestPhone,
+      customerId: null,
+      guestName,
+      guestEmail,
+      guestPhone,
       items,
       subtotal,
       deliveryFee,
@@ -94,11 +90,11 @@ function Checkout() {
       <h1 className="font-display text-4xl text-primary text-center mb-2">Checkout</h1>
       {step < 5 && (
         <p className="font-body text-on-surface-variant text-center mb-12">
-          Step {step} of {user ? 3 : 4}
+          Step {step} of 4
         </p>
       )}
 
-      {step === 1 && !user && (
+      {step === 1 && (
         <div>
           <h2 className="font-display text-2xl text-on-surface mb-6">Your Details</h2>
           <div className="space-y-4 mb-8">
@@ -135,7 +131,7 @@ function Checkout() {
         </div>
       )}
 
-      {step === (user ? 1 : 2) && (
+      {step === 2 && (
         <div>
           <h2 className="font-display text-2xl text-on-surface mb-6">Delivery Address</h2>
           <div className="space-y-4 mb-8">
@@ -176,17 +172,15 @@ function Checkout() {
             />
           </div>
           <div className="flex gap-4">
-            {!user && (
-              <button
-                onClick={() => setStep(1)}
-                className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
-              >
-                ← Back
-              </button>
-            )}
+            <button
+              onClick={() => setStep(1)}
+              className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
+            >
+              ← Back
+            </button>
             {address.street && address.suburb && address.city && address.province && address.postalCode && (
               <button
-                onClick={() => setStep(user ? 2 : 3)}
+                onClick={() => setStep(3)}
                 className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto"
               >
                 Continue to Delivery
@@ -196,7 +190,7 @@ function Checkout() {
         </div>
       )}
 
-      {step === (user ? 2 : 3) && (
+      {step === 3 && (
         <div>
           <h2 className="font-display text-2xl text-on-surface mb-6">Delivery Method</h2>
           <div className="space-y-4 mb-8">
@@ -222,14 +216,14 @@ function Checkout() {
           </div>
           <div className="flex gap-4">
             <button
-              onClick={() => setStep(user ? 1 : 2)}
+              onClick={() => setStep(2)}
               className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
             >
               ← Back
             </button>
             {deliveryMethod && (
               <button
-                onClick={() => setStep(user ? 3 : 4)}
+                onClick={() => setStep(4)}
                 className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto"
               >
                 Continue to Payment
@@ -239,7 +233,7 @@ function Checkout() {
         </div>
       )}
 
-      {step === (user ? 3 : 4) && (
+      {step === 4 && (
         <div>
           <h2 className="font-display text-2xl text-on-surface mb-6">Review & Pay</h2>
 
@@ -268,7 +262,7 @@ function Checkout() {
 
           <div className="flex gap-4">
             <button
-              onClick={() => setStep(user ? 2 : 3)}
+              onClick={() => setStep(3)}
               className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
             >
               ← Back
@@ -294,7 +288,7 @@ function Checkout() {
             Order Number: <span className="text-primary">{orderNumber}</span>
           </p>
           
-            <a href="/"
+          <a  href="/"
             className="inline-block bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg"
           >
             Return Home

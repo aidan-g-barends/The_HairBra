@@ -1,8 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
-import Login from './pages/Login'
-import Register from './pages/Register'
 import Hero from './components/layout/home/Hero'
 import AboutSection from './components/layout/home/About'
 import Services from './components/layout/home/Services'
@@ -17,15 +15,12 @@ import Shop from './pages/Shop'
 import ProductDetail from './pages/ProductDetail'
 import Cart from './pages/Cart'
 import Checkout from './pages/Checkout'
-import Dashboard from './pages/Dashboard'
 
 function App() {
   return (
     <div className="bg-black min-h-screen">
       <Navbar />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
         <Route
           path="/"
           element={
@@ -47,7 +42,6 @@ function App() {
         <Route path="/shop/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Footer />
     </div>

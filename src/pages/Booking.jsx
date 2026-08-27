@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from '../context/AuthContext'
 import { getAllServices } from '../services/serviceService'
 import { getAllBarbers } from '../services/barberService'
 import {
@@ -12,8 +11,6 @@ import {
 import { processPayment } from '../services/paymentService'
 
 function Booking() {
-  const { user } = useAuth()
-
   const [step, setStep] = useState(1)
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
@@ -92,10 +89,10 @@ function Booking() {
     const endTime = calculateEndTime(selectedTime, selectedService.duration_minutes)
 
     const { data: appointment, error: createError } = await createAppointment({
-      customerId: user?.id || null,
-      guestName: user ? null : guestName,
-      guestEmail: user ? null : guestEmail,
-      guestPhone: user ? null : guestPhone,
+      customerId: null,
+      guestName,
+      guestEmail,
+      guestPhone,
       barberId: selectedBarber?.id || null,
       serviceId: selectedService.id,
       date: selectedDate,
@@ -127,7 +124,7 @@ function Booking() {
     )
 
     await notifyCustomer(
-      user?.email || guestEmail,
+      guestEmail,
       `${selectedService.name} on ${selectedDate} at ${selectedTime}`
     )
 
@@ -141,7 +138,7 @@ function Booking() {
       <h1 className="font-display text-4xl text-primary text-center mb-2">Book an Appointment</h1>
       {step < 6 && (
         <p className="font-body text-on-surface-variant text-center mb-12">
-          Step {step} of {user ? 4 : 5}
+          Step {step} of 5
         </p>
       )}
 
@@ -278,7 +275,7 @@ function Booking() {
             </button>
             {selectedDate && selectedTime && (
               <button
-                onClick={() => setStep(user ? 5 : 4)}
+                onClick={() => setStep(4)}
                 className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto"
               >
                 Continue
@@ -288,7 +285,7 @@ function Booking() {
         </div>
       )}
 
-      {step === 4 && !user && (
+      {step === 4 && (
         <div>
           <h2 className="font-display text-2xl text-on-surface mb-6">Your Details</h2>
 
@@ -364,12 +361,10 @@ function Booking() {
               <span className="font-body text-on-surface-variant">Time</span>
               <span className="font-body text-on-surface">{selectedTime}</span>
             </div>
-            {!user && (
-              <div className="flex justify-between border-b border-surface-bright pb-4">
-                <span className="font-body text-on-surface-variant">Booking For</span>
-                <span className="font-body text-on-surface">{guestName}</span>
-              </div>
-            )}
+            <div className="flex justify-between border-b border-surface-bright pb-4">
+              <span className="font-body text-on-surface-variant">Booking For</span>
+              <span className="font-body text-on-surface">{guestName}</span>
+            </div>
             <div className="flex justify-between border-b border-surface-bright pb-4">
               <span className="font-body text-on-surface-variant">Service Price</span>
               <span className="font-body text-on-surface">R{selectedService?.price}</span>
@@ -392,7 +387,7 @@ function Booking() {
 
           <div className="flex gap-4">
             <button
-              onClick={() => setStep(user ? 3 : 4)}
+              onClick={() => setStep(4)}
               className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
             >
               ← Back
@@ -443,7 +438,7 @@ function Booking() {
           </p>
 
           
-            <a href="/"
+            < a href="/"
             className="inline-block bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg"
           >
             Return Home
