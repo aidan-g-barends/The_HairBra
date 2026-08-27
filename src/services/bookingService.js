@@ -127,3 +127,29 @@ export async function getCustomerAppointments(customerId) {
 
   return { data, error }
 }
+
+export async function getBarberReviews(barberId) {
+  const { data, error } = await supabase
+    .from('barber_reviews')
+    .select('*, profiles(full_name)')
+    .eq('barber_id', barberId)
+    .order('created_at', { ascending: false })
+
+  return { data, error }
+}
+
+export async function createReview({ appointmentId, customerId, barberId, rating, review }) {
+  const { data, error } = await supabase
+    .from('barber_reviews')
+    .insert({
+      appointment_id: appointmentId,
+      customer_id: customerId,
+      barber_id: barberId,
+      rating,
+      review,
+    })
+    .select()
+    .single()
+
+  return { data, error }
+}

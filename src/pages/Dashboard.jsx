@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
-import { getCustomerAppointments } from '../services/bookingService'
+import { getCustomerAppointments, createReview } from '../services/bookingService'
 import { getCustomerOrders } from '../services/orderService'
 
 function Dashboard() {
@@ -9,6 +9,11 @@ function Dashboard() {
   const [appointments, setAppointments] = useState([])
   const [orders, setOrders] = useState([])
   const [loading, setLoading] = useState(true)
+
+  const [reviewingId, setReviewingId] = useState(null)
+  const [rating, setRating] = useState(5)
+  const [reviewText, setReviewText] = useState('')
+  const [reviewSubmitted, setReviewSubmitted] = useState({})
 
   useEffect(() => {
     if (!user) return
@@ -24,6 +29,23 @@ function Dashboard() {
     }
     fetchData()
   }, [user])
+
+  async function handleSubmitReview(appt) {
+    const { error } = await createReview({
+      appointmentId: appt.id,
+      customerId: user.id,
+      barberId: appt.barber_id,
+      rating,
+      review: reviewText,
+    })
+
+    if (!error) {
+      setReviewSubmitted((current) => ({ ...current, [appt.id]: true }))
+      setReviewingId(null)
+      setReviewText('')
+      setRating(5)
+    }
+  }
 
   if (authLoading) return <p className="text-on-surface p-8 text-center">Loading...</p>
 
@@ -87,19 +109,71 @@ function Dashboard() {
           ) : (
             <div className="space-y-4 mb-12">
               {past.map((appt) => (
-                <div
-                  key={appt.id}
-                  className="bg-surface-dim border border-surface-bright rounded-xl p-6 flex justify-between items-center opacity-70"
-                >
-                  <div>
-                    <h3 className="font-display text-lg text-on-surface">{appt.services?.name}</h3>
-                    <p className="font-body text-on-surface-variant text-sm">
-                      {appt.barbers?.name || 'Any Available'} — {appt.appointment_date}
-                    </p>
+                <div key={appt.id} className="bg-surface-dim border border-surface-bright rounded-xl p-6">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 className="font-display text-lg text-on-surface">{appt.services?.name}</h3>
+                      <p className="font-body text-on-surface-variant text-sm">
+                        {appt.barbers?.name || 'Any Available'} — {appt.appointment_date}
+                      </p>
+                    </div>
+                    <span className="font-body text-on-surface-variant text-xs uppercase">
+                      {appt.status}
+                    </span>
                   </div>
-                  <span className="font-body text-on-surface-variant text-xs uppercase">
-                    {appt.status}
-                  </span>
+
+                  {appt.status === 'CONFIRMED' && appt.barber_id && !reviewSubmitted[appt.id] && (
+                    <div className="mt-4 pt-4 border-t border-surface-bright">
+                      {reviewingId === appt.id ? (
+                        <div>
+                          <div className="flex gap-1 mb-3">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button
+                                key={star}
+                                onClick={() => setRating(star)}
+                                className={`text-xl ${star <= rating ? 'text-primary' : 'text-surface-bright'}`}
+                              >
+                                ★
+                              </button>
+                            ))}
+                          </div>
+                          <textarea
+                            placeholder="Share your experience (optional)"
+                            value={reviewText}
+                            onChange={(e) => setReviewText(e.target.value)}
+                            className="w-full p-3 bg-white text-black rounded-lg mb-3"
+                            rows={3}
+                          />
+                          <div className="flex gap-3">
+                            <button
+                              onClick={() => setReviewingId(null)}
+                              className="font-body text-on-surface-variant text-xs uppercase tracking-wide"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              onClick={() => handleSubmitReview(appt)}
+                              className="bg-primary text-on-primary font-body text-xs uppercase px-4 py-2 rounded-lg"
+                            >
+                              Submit Review
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => setReviewingId(appt.id)}
+                          className="font-body text-primary text-xs uppercase tracking-wide"
+                        >
+                          Leave a Review
+                        </button>
+                      )}
+                    </div>
+                  )}
+                  {reviewSubmitted[appt.id] && (
+                    <p className="mt-4 pt-4 border-t border-surface-bright font-body text-primary text-sm">
+                      ✓ Review submitted
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
