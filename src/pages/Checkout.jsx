@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import { createOrder, confirmOrderPayment, reduceStock, notifyOwnerOfOrder } from '../services/orderService'
-import { processPayment } from '../services/paymentService'
 import { isValidEmail, isValidSAPhone, isValidPostalCode } from '../utils/validation'
-
+import StripePaymentForm from '../components/payment/StripePaymentForm'
 
 const deliveryOptions = [
   { id: 'courier', label: 'Courier', fee: 60, description: '2-3 business days' },
@@ -43,7 +42,7 @@ function Checkout() {
     : 0
   const total = subtotal + deliveryFee
 
-  async function handlePlaceOrder() {
+  async function handleStripeOrderSuccess(paymentIntent) {
     setProcessing(true)
     setError('')
 
@@ -65,15 +64,7 @@ function Checkout() {
       return
     }
 
-    const payment = await processPayment(total)
-
-    if (!payment.success) {
-      setError("We couldn't process your payment. Please try again.")
-      setProcessing(false)
-      return
-    }
-
-    await confirmOrderPayment(order.id, payment.transactionReference)
+    await confirmOrderPayment(order.id, paymentIntent.id)
     await reduceStock(items)
     await notifyOwnerOfOrder(order.order_number, total)
 
@@ -283,21 +274,18 @@ function Checkout() {
 
           {error && <p className="text-red-400 mb-4">{error}</p>}
 
-          <div className="flex gap-4">
-            <button
-              onClick={() => setStep(3)}
-              className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
-            >
-              ← Back
-            </button>
-            <button
-              onClick={handlePlaceOrder}
-              disabled={processing}
-              className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto disabled:opacity-50"
-            >
-              {processing ? 'Processing...' : 'Place Order'}
-            </button>
-          </div>
+          <StripePaymentForm
+            amount={total}
+            onSuccess={handleStripeOrderSuccess}
+            onError={(msg) => setError(msg)}
+          />
+
+          <button
+            onClick={() => setStep(3)}
+            className="mt-4 font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
+          >
+            ← Back
+          </button>
         </div>
       )}
 

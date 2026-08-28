@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { getStripe, createStripePaymentIntent } from '../../services/paymentService'
 
@@ -46,9 +46,9 @@ function StripePaymentForm({ amount, onSuccess, onError }) {
   const [clientSecret, setClientSecret] = useState(null)
   const [stripePromise] = useState(() => getStripe())
 
-  useState(() => {
+  useEffect(() => {
     createStripePaymentIntent(amount).then(setClientSecret)
-  }, [])
+  }, [amount])
 
   if (!clientSecret) {
     return <p className="text-on-surface-variant">Loading payment form...</p>

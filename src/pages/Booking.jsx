@@ -10,6 +10,7 @@ import {
 } from '../services/bookingService'
 import { processPayment } from '../services/paymentService'
 import { isValidEmail, isValidSAPhone } from '../utils/validation'
+import StripePaymentForm from '../components/payment/StripePaymentForm'
 
 function Booking() {
   const [step, setStep] = useState(1)
@@ -30,6 +31,7 @@ function Booking() {
   const [guestEmail, setGuestEmail] = useState('')
   const [guestPhone, setGuestPhone] = useState('')
 
+  const [paymentMethod, setPaymentMethod] = useState('mock')
   const [processing, setProcessing] = useState(false)
   const [paymentError, setPaymentError] = useState('')
   const [bookingRef, setBookingRef] = useState(null)
@@ -127,6 +129,47 @@ function Booking() {
       `${selectedService.name} on ${selectedDate} at ${selectedTime}`
     )
 
+    await notifyCustomer(
+      guestEmail,
+      `${selectedService.name} on ${selectedDate} at ${selectedTime}`
+    )
+
+    setBookingRef(appointment.id)
+    setProcessing(false)
+    setStep(6)
+  }
+
+  async function handleStripeSuccess(paymentIntent) {
+    setProcessing(true)
+    setPaymentError('')
+
+    const endTime = calculateEndTime(selectedTime, selectedService.duration_minutes)
+
+    const { data: appointment, error: createError } = await createAppointment({
+      customerId: null,
+      guestName,
+      guestEmail,
+      guestPhone,
+      barberId: selectedBarber?.id || null,
+      serviceId: selectedService.id,
+      date: selectedDate,
+      time: selectedTime,
+      endTime,
+      depositAmount: selectedService.deposit_amount,
+    })
+
+    if (createError) {
+      setPaymentError('This time slot was just booked. Please choose another.')
+      setProcessing(false)
+      setStep(3)
+      return
+    }
+
+    await confirmAppointmentPayment(appointment.id, paymentIntent.id)
+    await notifyBarber(
+      selectedBarber?.name || 'Any Available Barber',
+      `${selectedService.name} on ${selectedDate} at ${selectedTime}`
+    )
     await notifyCustomer(
       guestEmail,
       `${selectedService.name} on ${selectedDate} at ${selectedTime}`
@@ -401,21 +444,20 @@ function Booking() {
 
           {paymentError && <p className="text-red-400 mb-4">{paymentError}</p>}
 
-          <div className="flex gap-4">
-            <button
-              onClick={() => setStep(4)}
-              className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
-            >
-              ← Back
-            </button>
-            <button
-              onClick={handleConfirmAndPay}
-              disabled={processing}
-              className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto disabled:opacity-50"
-            >
-              {processing ? 'Processing...' : 'Confirm & Pay Deposit'}
-            </button>
-          </div>
+          <div className="mb-6">
+  <StripePaymentForm
+    amount={selectedService?.deposit_amount}
+    onSuccess={handleStripeSuccess}
+    onError={(msg) => setPaymentError(msg)}
+  />
+
+  <button
+    onClick={() => setStep(4)}
+    className="mt-4 font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
+  >
+    ← Back
+  </button>
+</div>
         </div>
       )}
 
