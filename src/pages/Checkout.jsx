@@ -4,6 +4,7 @@ import { createOrder, confirmOrderPayment, reduceStock, notifyOwnerOfOrder } fro
 import { processPayment } from '../services/paymentService'
 import { isValidEmail, isValidSAPhone, isValidPostalCode } from '../utils/validation'
 
+
 const deliveryOptions = [
   { id: 'courier', label: 'Courier', fee: 60, description: '2-3 business days' },
   { id: 'paxi', label: 'PAXI', fee: 40, description: '5-7 business days, collect at store' },
