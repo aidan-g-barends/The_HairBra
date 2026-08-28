@@ -30,7 +30,17 @@ export async function getBookedSlots(barberId, date) {
 }
 
 export async function getAvailableSlots(barberId, date) {
-  const allSlots = generateTimeSlots()
+  let allSlots = generateTimeSlots()
+
+  const todayStr = new Date().toISOString().split('T')[0]
+  if (date === todayStr) {
+    const now = new Date()
+    const nowMinutes = now.getHours() * 60 + now.getMinutes()
+    allSlots = allSlots.filter((slot) => {
+      const [h, m] = slot.split(':').map(Number)
+      return h * 60 + m > nowMinutes
+    })
+  }
 
   if (!barberId) {
     return { slots: allSlots, error: null }

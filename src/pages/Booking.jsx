@@ -9,6 +9,7 @@ import {
   notifyCustomer,
 } from '../services/bookingService'
 import { processPayment } from '../services/paymentService'
+import { isValidEmail, isValidSAPhone } from '../utils/validation'
 
 function Booking() {
   const [step, setStep] = useState(1)
@@ -32,6 +33,9 @@ function Booking() {
   const [processing, setProcessing] = useState(false)
   const [paymentError, setPaymentError] = useState('')
   const [bookingRef, setBookingRef] = useState(null)
+
+  const emailValid = isValidEmail(guestEmail)
+  const phoneValid = isValidSAPhone(guestPhone)
 
   useEffect(() => {
     async function fetchServices() {
@@ -289,7 +293,7 @@ function Booking() {
         <div>
           <h2 className="font-display text-2xl text-on-surface mb-6">Your Details</h2>
 
-          <div className="space-y-4 mb-8">
+          <div className="space-y-4 mb-2">
             <input
               type="text"
               placeholder="Full Name"
@@ -297,30 +301,42 @@ function Booking() {
               onChange={(e) => setGuestName(e.target.value)}
               className="w-full p-3 bg-white text-black rounded-lg"
             />
-            <input
-              type="email"
-              placeholder="Email"
-              value={guestEmail}
-              onChange={(e) => setGuestEmail(e.target.value)}
-              className="w-full p-3 bg-white text-black rounded-lg"
-            />
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              value={guestPhone}
-              onChange={(e) => setGuestPhone(e.target.value)}
-              className="w-full p-3 bg-white text-black rounded-lg"
-            />
+
+            <div>
+              <input
+                type="email"
+                placeholder="Email"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                className="w-full p-3 bg-white text-black rounded-lg"
+              />
+              {guestEmail && !emailValid && (
+                <p className="text-red-400 text-xs mt-1">Please enter a valid email address.</p>
+              )}
+            </div>
+
+            <div>
+              <input
+                type="tel"
+                placeholder="Phone Number (e.g. 082 123 4567)"
+                value={guestPhone}
+                onChange={(e) => setGuestPhone(e.target.value)}
+                className="w-full p-3 bg-white text-black rounded-lg"
+              />
+              {guestPhone && !phoneValid && (
+                <p className="text-red-400 text-xs mt-1">Please enter a valid South African phone number.</p>
+              )}
+            </div>
           </div>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 mt-6">
             <button
               onClick={() => setStep(3)}
               className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
             >
               ← Back
             </button>
-            {guestName && guestEmail && guestPhone && (
+            {guestName && emailValid && phoneValid && (
               <button
                 onClick={() => setStep(5)}
                 className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto"
@@ -438,7 +454,7 @@ function Booking() {
           </p>
 
           
-            < a href="/"
+           <a href="/"
             className="inline-block bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg"
           >
             Return Home

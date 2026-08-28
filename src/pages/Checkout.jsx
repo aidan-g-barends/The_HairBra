@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useCart } from '../context/CartContext'
 import { createOrder, confirmOrderPayment, reduceStock, notifyOwnerOfOrder } from '../services/orderService'
 import { processPayment } from '../services/paymentService'
+import { isValidEmail, isValidSAPhone, isValidPostalCode } from '../utils/validation'
 
 const deliveryOptions = [
   { id: 'courier', label: 'Courier', fee: 60, description: '2-3 business days' },
@@ -31,6 +32,10 @@ function Checkout() {
   const [processing, setProcessing] = useState(false)
   const [error, setError] = useState('')
   const [orderNumber, setOrderNumber] = useState(null)
+
+  const emailValid = isValidEmail(guestEmail)
+  const phoneValid = isValidSAPhone(guestPhone)
+  const postalValid = isValidPostalCode(address.postalCode)
 
   const deliveryFee = deliveryMethod
     ? deliveryOptions.find((d) => d.id === deliveryMethod).fee
@@ -97,7 +102,7 @@ function Checkout() {
       {step === 1 && (
         <div>
           <h2 className="font-display text-2xl text-on-surface mb-6">Your Details</h2>
-          <div className="space-y-4 mb-8">
+          <div className="space-y-4 mb-2">
             <input
               type="text"
               placeholder="Full Name"
@@ -105,25 +110,37 @@ function Checkout() {
               onChange={(e) => setGuestName(e.target.value)}
               className="w-full p-3 bg-white text-black rounded-lg"
             />
-            <input
-              type="email"
-              placeholder="Email"
-              value={guestEmail}
-              onChange={(e) => setGuestEmail(e.target.value)}
-              className="w-full p-3 bg-white text-black rounded-lg"
-            />
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              value={guestPhone}
-              onChange={(e) => setGuestPhone(e.target.value)}
-              className="w-full p-3 bg-white text-black rounded-lg"
-            />
+
+            <div>
+              <input
+                type="email"
+                placeholder="Email"
+                value={guestEmail}
+                onChange={(e) => setGuestEmail(e.target.value)}
+                className="w-full p-3 bg-white text-black rounded-lg"
+              />
+              {guestEmail && !emailValid && (
+                <p className="text-red-400 text-xs mt-1">Please enter a valid email address.</p>
+              )}
+            </div>
+
+            <div>
+              <input
+                type="tel"
+                placeholder="Phone Number (e.g. 082 123 4567)"
+                value={guestPhone}
+                onChange={(e) => setGuestPhone(e.target.value)}
+                className="w-full p-3 bg-white text-black rounded-lg"
+              />
+              {guestPhone && !phoneValid && (
+                <p className="text-red-400 text-xs mt-1">Please enter a valid South African phone number.</p>
+              )}
+            </div>
           </div>
-          {guestName && guestEmail && guestPhone && (
+          {guestName && emailValid && phoneValid && (
             <button
               onClick={() => setStep(2)}
-              className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg"
+              className="mt-6 bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg"
             >
               Continue to Address
             </button>
@@ -134,7 +151,7 @@ function Checkout() {
       {step === 2 && (
         <div>
           <h2 className="font-display text-2xl text-on-surface mb-6">Delivery Address</h2>
-          <div className="space-y-4 mb-8">
+          <div className="space-y-4 mb-2">
             <input
               type="text"
               placeholder="Street Address"
@@ -163,22 +180,27 @@ function Checkout() {
               onChange={(e) => setAddress({ ...address, province: e.target.value })}
               className="w-full p-3 bg-white text-black rounded-lg"
             />
-            <input
-              type="text"
-              placeholder="Postal Code"
-              value={address.postalCode}
-              onChange={(e) => setAddress({ ...address, postalCode: e.target.value })}
-              className="w-full p-3 bg-white text-black rounded-lg"
-            />
+            <div>
+              <input
+                type="text"
+                placeholder="Postal Code"
+                value={address.postalCode}
+                onChange={(e) => setAddress({ ...address, postalCode: e.target.value })}
+                className="w-full p-3 bg-white text-black rounded-lg"
+              />
+              {address.postalCode && !postalValid && (
+                <p className="text-red-400 text-xs mt-1">Please enter a valid 4-digit postal code.</p>
+              )}
+            </div>
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 mt-6">
             <button
               onClick={() => setStep(1)}
               className="font-body text-on-surface-variant text-xs uppercase tracking-wide hover:text-primary transition-colors"
             >
               ← Back
             </button>
-            {address.street && address.suburb && address.city && address.province && address.postalCode && (
+            {address.street && address.suburb && address.city && address.province && postalValid && (
               <button
                 onClick={() => setStep(3)}
                 className="bg-primary text-on-primary font-body font-semibold uppercase px-6 py-2.5 rounded-lg ml-auto"
@@ -288,7 +310,7 @@ function Checkout() {
             Order Number: <span className="text-primary">{orderNumber}</span>
           </p>
           
-          <a  href="/"
+           <a href="/"
             className="inline-block bg-primary text-on-primary font-body font-semibold uppercase px-8 py-3 rounded-lg"
           >
             Return Home
