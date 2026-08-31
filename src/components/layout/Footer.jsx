@@ -31,6 +31,7 @@ function Footer() {
             <li><Link to="/barbers" className="hover:text-primary">Barbers</Link></li>
             <li><Link to="/shop" className="hover:text-primary">Shop</Link></li>
             <li><Link to="/booking" className="hover:text-primary">Book Appointment</Link></li>
+            <li><Link to="/leave-review" className="hover:text-primary">Leave Review</Link></li>
           </ul>
         </div>
 
