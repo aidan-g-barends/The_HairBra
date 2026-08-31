@@ -6,7 +6,6 @@ import AboutSection from './components/layout/home/About'
 import Services from './components/layout/home/Services'
 import BarbersPreview from './components/layout/home/Barbers'
 import Products from './components/layout/home/Products'
-import Reviews from './components/layout/home/Reviews'
 import About from './pages/About'
 import Barbers from './pages/Barbers'
 import BarberProfile from './pages/BarberProfile'
@@ -43,7 +42,7 @@ function App() {
         <Route path="/shop/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
-        <Route path="/leave-review" element={<LeaveReview />} />
+  
       </Routes>
       <Footer />
     </div>

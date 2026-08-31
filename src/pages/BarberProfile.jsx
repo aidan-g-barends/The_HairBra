@@ -121,6 +121,15 @@ function BarberProfile() {
     )}
   </div>
 </section>
+
+<div className="text-center mt-8">
+  <Link
+    to="/review"
+    className="font-body text-primary text-xs uppercase tracking-wide hover:opacity-80 transition-opacity"
+  >
+    Leave a Review for {barber.name.split(' ')[0]} →
+  </Link>
+</div>
     </div>
   )
 }
