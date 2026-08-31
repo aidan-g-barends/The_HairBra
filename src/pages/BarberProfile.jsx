@@ -1,20 +1,28 @@
 import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { getBarberById } from '../services/barberService'
+import { getAllReviews } from '../services/bookingService'
 
 function BarberProfile() {
   const { id } = useParams()
   const [barber, setBarber] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [reviews, setReviews] = useState([])
 
   useEffect(() => {
-    async function fetchBarber() {
-      const { data, error } = await getBarberById(id)
-      if (!error) setBarber(data)
-      setLoading(false)
-    }
-    fetchBarber()
-  }, [id])
+  async function fetchBarber() {
+    const { data, error } = await getBarberById(id)
+    if (!error) setBarber(data)
+    setLoading(false)
+  }
+  async function fetchReviews() {
+    const { data } = await getAllReviews()
+    const barberReviews = (data || []).filter((r) => r.barber_id === id)
+    setReviews(barberReviews)
+  }
+  fetchBarber()
+  fetchReviews()
+}, [id])
 
   if (loading) {
     return <p className="text-on-surface p-8 text-center">Loading...</p>
@@ -89,26 +97,30 @@ function BarberProfile() {
       </section>
 
       <section className="bg-surface-container-lowest border-t border-surface-bright px-6 py-20">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-display text-2xl text-primary mb-8">What Clients Say</h2>
-          <div className="grid md:grid-cols-2 gap-6 text-left">
-            <div className="bg-surface-dim border border-surface-bright rounded-xl p-6">
-              <p className="text-primary mb-3">⭐⭐⭐⭐⭐</p>
-              <p className="font-body text-on-surface-variant mb-4">
-                "Best fade I've had in years. {barber.name.split(' ')[0]} really listens to what you want."
-              </p>
-              <p className="font-body text-on-surface text-sm">— Thabo M.</p>
+  <div className="max-w-3xl mx-auto text-center">
+    <h2 className="font-display text-2xl text-primary mb-8">What Clients Say</h2>
+
+    {reviews.length === 0 ? (
+      <p className="font-body text-on-surface-variant">No reviews yet for {barber.name.split(' ')[0]}.</p>
+    ) : (
+      <div className="grid md:grid-cols-2 gap-6 text-left">
+        {reviews.map((r) => {
+          const separatorIndex = (r.review || '').indexOf(':')
+          const name = separatorIndex === -1 ? 'Anonymous' : r.review.slice(0, separatorIndex).trim()
+          const text = separatorIndex === -1 ? r.review : r.review.slice(separatorIndex + 1).trim()
+
+          return (
+            <div key={r.id} className="bg-surface-dim border border-surface-bright rounded-xl p-6">
+              <p className="text-primary mb-3">{'★'.repeat(r.rating)}</p>
+              <p className="font-body text-on-surface-variant mb-4">"{text}"</p>
+              <p className="font-body text-on-surface text-sm">— {name}</p>
             </div>
-            <div className="bg-surface-dim border border-surface-bright rounded-xl p-6">
-              <p className="text-primary mb-3">⭐⭐⭐⭐⭐</p>
-              <p className="font-body text-on-surface-variant mb-4">
-                "Consistent quality every single visit. Always know exactly what I'm getting."
-              </p>
-              <p className="font-body text-on-surface text-sm">— James K.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+          )
+        })}
+      </div>
+    )}
+  </div>
+</section>
     </div>
   )
 }

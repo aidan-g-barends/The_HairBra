@@ -28,6 +28,14 @@ export async function getBookedSlots(barberId, date) {
 
   return { data, error }
 }
+export async function getAllReviews() {
+  const { data, error } = await supabase
+    .from('barber_reviews')
+    .select('*, barbers(name)')
+    .order('created_at', { ascending: false })
+
+  return { data, error }
+}
 
 export async function getAvailableSlots(barberId, date) {
   let allSlots = generateTimeSlots()
