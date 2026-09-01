@@ -30,7 +30,6 @@ function App() {
               <Services />
               <BarbersPreview />
               <Products />
-              <Reviews />
             </>
           }
         />
@@ -42,7 +41,7 @@ function App() {
         <Route path="/shop/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
-  
+        <Route path="/review" element={<LeaveReview />} />
       </Routes>
       <Footer />
     </div>
